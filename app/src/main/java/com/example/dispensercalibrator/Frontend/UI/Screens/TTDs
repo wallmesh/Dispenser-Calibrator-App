@@ -1,0 +1,6 @@
+1.	implement Room
+2.	Create a Ui and a VM to hold the state
+3.	create mock Room data
+2.	Test the successful transfer fo data form Room to Google Sheets
+3.	Test the response from the Http server upon a successful update to Google sheets
+4.	Test a successful deletion of items from the Room db after receiving a successful delivery to Google Sheets response form the 	Http server
