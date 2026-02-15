@@ -1,25 +1,44 @@
 package com.example.dispensercalibrator.Frontend.UI.Screens
 
+import android.content.Context
+import android.os.Build
+import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.dispensercalibrator.Backend.Ktor.KtorMain
 import com.example.dispensercalibrator.Backend.Room.CalibrationTest
+import com.example.dispensercalibrator.Backend.Room.EachCardState
 import com.example.dispensercalibrator.Backend.Room.MainDAO
-import com.example.dispensercalibrator.Backend.Room.tester
+import com.google.api.services.drive.Drive
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.ktor.client.statement.bodyAsText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+//TTDS
+// 1.
 
 //  WE ARE FOLLOWING THE SINGLETON PATTERN HERE USING DEPENDENCY INJECTION. SO A SINGLE INSTANCE OF THE CalibrationTest() CLASS HERE IS BOTH
 //  WRITTEN TO AND READ FROM EVERYWHERE THIS VIEWMODEL IS CALLED
 @HiltViewModel
-class MyScreensVM @Inject constructor (val example: tester): ViewModel() {
+class MyScreensVM @Inject constructor (val dao: MainDAO, var mydata: CalibrationTest, val mycontext: Context): ViewModel() {
 
-          val mydata = CalibrationTest()
+          @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+           suspend fun writeToCSV(service: Drive, accessToken: String) {
+                    lateinit var dataholder: List<EachCardState>
+                    val me = viewModelScope.launch(Dispatchers.IO) {
+                                        dataholder = dao.retriveAll()
+                                        val ktor = KtorMain().KtorInstance(body = dataholder, accessToken = accessToken, service = service)
+                                        Log.d("chkOutput", "THE OUTPUT STREAM VALUE IS:${ktor}")
+                    }
+          }
+
 
           //  STATE HOLDER FOR UI DATA
           var changeCylinderID: String by mutableStateOf("")
@@ -62,7 +81,7 @@ class MyScreensVM @Inject constructor (val example: tester): ViewModel() {
           fun pushToRoomDB(){
                     val scope = CoroutineScope(Dispatchers.IO)
                     scope.launch {
-                          //    val me = dao.Insert_CalibrationDetails(mydata)
+                              val me = dao.Insert_CalibrationDetails(mydata)
                     }
           }
 

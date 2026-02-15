@@ -5,19 +5,18 @@ package com.example.dispensercalibrator.Backend.Room
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.dispensercalibrator.Frontend.UI.Screens.MyScreensVM
 import javax.inject.Inject
 import javax.inject.Singleton
 
-class tester @Inject constructor (){
-          fun something(){
-                    println("this is a test")
-          }
+@Singleton
+class tester @Inject constructor (var name: String){
+
 }
 
-//@Singleton
+
+/*@Singleton
 @Entity
-data class CalibrationTest  (
+data class CalibrationTest @Inject constructor  (
                     @PrimaryKey(autoGenerate = true) @ColumnInfo ("ID") var id: Int = 0,
                     @ColumnInfo("date") var date: String = "",
                     @ColumnInfo("cylinder_id") var cylinderId: String = "",
@@ -35,8 +34,51 @@ data class CalibrationTest  (
                     @ColumnInfo("DispenserSN") var DispenserSN: String ="",
                     @ColumnInfo("Full") var Full: String = "",
                     @ColumnInfo("Station") var Station: String = "",
-                    )
+                    )*/
 
+
+@Singleton
+@Entity
+data class CalibrationTest @Inject constructor  (
+          @PrimaryKey(autoGenerate = true) @ColumnInfo ("ID") var id: Int,
+          @ColumnInfo("date") var date: String ,
+          @ColumnInfo("cylinder_id") var cylinderId: String,
+          @ColumnInfo("Empty") var Empty: String,
+          @ColumnInfo("Final") var Final: String ,
+          @ColumnInfo("Difference") var Difference: String,
+          @ColumnInfo("Tolerance") var Tolerance: String ,
+          @ColumnInfo("DM") var DM: String ,
+          @ColumnInfo("Litres") var Litres: String ,
+          @ColumnInfo("ExpectedLitres") var ExpectedLitres: String ,
+          @ColumnInfo("Side") var Side: String ,
+          @ColumnInfo("DispenserModel") var DispenserModel: String,
+          @ColumnInfo("LoadDensity") var LoadDensity: String ,
+          @ColumnInfo("Temperature") var Temperature: String,
+          @ColumnInfo("DispenserSN") var DispenserSN: String,
+          @ColumnInfo("Full") var Full: String,
+          @ColumnInfo("Station") var Station: String,
+)
+
+// @Singleton
+data class EachCardState @Inject constructor (
+          @PrimaryKey(autoGenerate = true) @ColumnInfo ("ID") var id: Int,
+          @ColumnInfo("date") var date: String ,
+          @ColumnInfo("cylinder_id") var cylinderId: String,
+          @ColumnInfo("Empty") var Empty: String,
+          @ColumnInfo("Final") var Final: String ,
+          @ColumnInfo("Difference") var Difference: String,
+          @ColumnInfo("Tolerance") var Tolerance: String ,
+          @ColumnInfo("DM") var DM: String ,
+          @ColumnInfo("Litres") var Litres: String ,
+          @ColumnInfo("ExpectedLitres") var ExpectedLitres: String ,
+          @ColumnInfo("Side") var Side: String ,
+          @ColumnInfo("DispenserModel") var DispenserModel: String,
+          @ColumnInfo("LoadDensity") var LoadDensity: String ,
+          @ColumnInfo("Temperature") var Temperature: String,
+          @ColumnInfo("DispenserSN") var DispenserSN: String,
+          @ColumnInfo("Full") var Full: String,
+          @ColumnInfo("Station") var Station: String,
+)
 
 
 

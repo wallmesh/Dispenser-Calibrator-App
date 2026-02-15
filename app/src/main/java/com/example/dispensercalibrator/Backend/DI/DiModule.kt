@@ -2,9 +2,12 @@ package com.example.dispensercalibrator.Backend.DI
 
 import android.content.Context
 import androidx.room.Room
-import com.example.dispensercalibrator.Backend.Room.CalibrationTest
 import com.example.dispensercalibrator.Backend.Room.MainDAO
 import com.example.dispensercalibrator.Backend.Room.RoomItemsDatabase
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
+import com.google.api.client.json.gson.GsonFactory
+import com.google.api.services.drive.Drive
+import com.google.auth.http.HttpCredentialsAdapter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -33,19 +36,39 @@ object DiModule {
                               .build()
           }
 
+          @Singleton
+          @Provides
+          fun provideString(): String {
+                    return ""
+          }
 
-        /*  @Singleton
+          @Singleton
+          @Provides
+          fun provideInt(): Int {
+                    return 0
+          }
+
+          @Singleton
           @Provides
           fun provideVehicleDao(database: RoomItemsDatabase): MainDAO {
-                    return database.MainDAO()
-          }*/
+                    return database.mainDAO()
+          }
 
-
-          /*@Singleton
+          @Singleton
           @Provides
-          fun provideCalibrationDataInstance(): CalibrationTest {
-                    return CalibrationTest()
-          }*/
+          fun provideContext(@ApplicationContext myContext: Context): Context {
+                    return myContext
+          }
+
+         /* val driveInit =
+                    Drive.Builder(
+                              GoogleNetHttpTransport.newTrustedTransport(),
+                              GsonFactory.getDefaultInstance(),
+                              HttpCredentialsAdapter(
+                                        credentials
+                              )
+                    ).build()*/
+
 
 }
 

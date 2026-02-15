@@ -16,7 +16,7 @@ android {
 
           defaultConfig {
                     applicationId = "com.example.dispensercalibrator"
-                    minSdk = 24
+                    minSdk = 27
                     targetSdk = 36
                     versionCode = 1
                     versionName = "1.0"
@@ -39,6 +39,20 @@ android {
           }
           buildFeatures {
                     compose = true
+          }
+
+          packaging {
+                    resources {
+                              excludes += "/META-INF/{AL2.0,LGPL2.1}"
+                              excludes += "META-INF/DEPENDENCIES"
+                              excludes += "META-INF/io.netty.versions.properties"
+                              excludes += "META-INF/INDEX.LIST"
+                              excludes += "arrow-git.properties"
+                              excludes += "mozilla/public-suffix-list.txt"
+                              excludes += "META-INF/FastDoubleParser-LICENSE"
+                              excludes += "META-INF/FastDoubleParser-NOTICE"
+                              excludes += "META-INF/thirdparty-LICENSE"
+                    }
           }
 }
 
@@ -84,4 +98,43 @@ dependencies {
           implementation("androidx.navigation:navigation-dynamic-features-fragment:$nav_version")
           // Testing Navigation
           androidTestImplementation("androidx.navigation:navigation-testing:$nav_version")
+
+          // OpenCSV
+          implementation("com.opencsv:opencsv:5.12.0")
+
+
+          //ktor
+          implementation("io.ktor:ktor-client-core:3.3.3")
+
+          implementation("io.ktor:ktor-client-cio:3.3.3")
+          implementation("io.ktor:ktor-client-okhttp:3.3.3")
+
+          implementation("io.ktor:ktor-client-logging:3.3.3")
+
+          implementation("io.ktor:ktor-client-content-negotiation:3.3.3")
+          implementation("io.ktor:ktor-serialization-kotlinx-json:3.3.3")
+          implementation("io.ktor:ktor-serialization-jackson:3.3.3")
+          implementation("io.ktor:ktor-serialization-kotlinx-xml:3.3.3")
+          implementation("io.ktor:ktor-serialization-kotlinx-cbor:3.3.3")
+          implementation("io.ktor:ktor-serialization-kotlinx-protobuf:3.3.3")
+
+          // Google Credentials
+          implementation("androidx.credentials:credentials:1.5.0")
+
+          // Android Auth Library
+          implementation("com.google.android.gms:play-services-auth:21.5.0")
+
+          // Google Drive Libraries
+          implementation("com.google.oauth-client:google-oauth-client-jetty:1.34.1")
+          implementation("com.google.apis:google-api-services-drive:v3-rev20220815-2.0.0")
+          implementation("com.google.code.gson:gson:2.13.2")
+
+
+          // Oauth2
+          // Source: https://mvnrepository.com/artifact/com.google.auth/google-auth-library-oauth2-http
+          implementation("com.google.auth:google-auth-library-oauth2-http:1.42.1")
+
+          // JSON serialization library, works with the Kotlin serialization plugin
+        /*  implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+          implementation("com.squareup.retrofit2:converter-kotlinx-serialization:3.0.0")*/
 }
