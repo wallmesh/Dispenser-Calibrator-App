@@ -55,7 +55,7 @@ class MainActivity : ComponentActivity() {
                                                   Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize().padding(innerPadding)) {
 
                                                             val controller = rememberNavController()
-                                                            MyHost(controller, vm, thisActivity)
+                                                            MyHost(controller, vm, thisActivity, applicationContext)
 
                                                   }
                                         }
@@ -90,7 +90,7 @@ class MainActivity : ComponentActivity() {
                                                             println("EXECUTING THE AUTH-SCREEN METHOD")
                                                             val vmInstance: MyScreensVM by viewModels()
                                                             val scope = CoroutineScope(Dispatchers.IO).launch {
-                                                                      vmInstance.writeToCSV(driveInit, token.toString())
+                                                                    //  vmInstance.writeToCSV(driveInit, token.toString())
                                                             }
                                                   } catch (e: ApiException) {
                                                   }
@@ -143,7 +143,7 @@ class MainActivity : ComponentActivity() {
                                                   println("EXECUTING THE AUTH METHOD")
                                                   val vmInstance: MyScreensVM by viewModels()
                                                   val scope = CoroutineScope(Dispatchers.IO).launch {
-                                                            vmInstance.writeToCSV(driveInit, rescheck!!)
+                                                         //   vmInstance.writeToCSV(driveInit, rescheck!!)
                                                   }
                                         }
                               }

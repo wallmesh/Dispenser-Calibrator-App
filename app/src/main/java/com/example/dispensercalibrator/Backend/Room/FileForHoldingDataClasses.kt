@@ -40,7 +40,7 @@ data class CalibrationTest @Inject constructor  (
 @Singleton
 @Entity
 data class CalibrationTest @Inject constructor  (
-          @PrimaryKey(autoGenerate = true) @ColumnInfo ("ID") var id: Int,
+          @PrimaryKey(autoGenerate = false) @ColumnInfo ("ID") var id: Int,
           @ColumnInfo("date") var date: String ,
           @ColumnInfo("cylinder_id") var cylinderId: String,
           @ColumnInfo("Empty") var Empty: String,
