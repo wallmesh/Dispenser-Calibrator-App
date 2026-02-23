@@ -38,6 +38,7 @@ class ShareToWhatsapp(val vm: MyScreensVM) {
                                                                       |DispenserSN: ${it.DispenserSN}
                                                                       |Full: ${it.Full}
                                                                       |Station: ${it.Station}
+                                                                      |State: 
                                                             """.trimMargin()
                                                   )
                                                   setPackage("com.whatsapp.w4b") // Directs intent to WhatsApp

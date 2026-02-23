@@ -34,14 +34,6 @@ import javax.inject.Inject
 @HiltViewModel
 class MyScreensVM @Inject constructor (val dao: MainDAO, var mydata: CalibrationTest): ViewModel() {
 
-          fun getAllData(): Deferred<List<EachCardState>> {
-                    val scope = CoroutineScope(Dispatchers.IO).async {
-                              dao.retrieveAll()
-                    }
-                    return scope
-          }
-
-
           //   Write to csv file
           @RequiresApi(Build.VERSION_CODES.TIRAMISU)
            suspend fun writeToCSV(service: Drive, accessToken: String) {

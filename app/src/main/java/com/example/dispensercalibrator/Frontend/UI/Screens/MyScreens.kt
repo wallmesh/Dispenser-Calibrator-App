@@ -1,42 +1,34 @@
 package com.example.dispensercalibrator.Frontend.UI.Screens
 
+//import com.example.dispensercalibrator.R
+import android.annotation.SuppressLint
 import android.content.Context
+import android.inputmethodservice.Keyboard
 import android.os.Build
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.BasicSecureTextField
-import androidx.compose.foundation.text.BasicTextField
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldColors
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.key
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -45,13 +37,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.example.dispensercalibrator.Backend.Room.EachCardState
 import com.example.dispensercalibrator.MainActivity
+import com.example.dispensercalibrator.R
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
-import kotlin.math.nextUp
 
 // TTDs
 // 1. Display the data automatically
@@ -124,7 +115,7 @@ import kotlin.math.nextUp
                               LazyColumn(modifier = Modifier.padding(innerPadding)) {
                                         item(numberOfItems.intValue){
                                                   rememberedItemsHolder.forEach { it ->
-                                                            EachCard(it, vm)
+                                                            EachCard(it, vm, context)
                                                             Spacer(modifier = Modifier.padding(bottom = 10.dp))
                                                   }
                                         }
@@ -210,107 +201,102 @@ import kotlin.math.nextUp
                                                             Text("Station")
                                                             Spacer(modifier = Modifier.padding(bottom = 240.dp))                                                  }
                                         }*/
-                              val bottomSpacing = 30.dp
-                                        Row (verticalAlignment = Alignment.Top, horizontalArrangement = Arrangement.Start, modifier = Modifier.fillMaxWidth().padding(start =bottomSpacing)){
-                                                  Column(modifier = Modifier.verticalScroll(vscroll)) {
-                                                            Text("Load Density")
-                                                            OutlinedTextField(
-                                                                      value = vm.changeLoadDensity,
-                                                                      onValueChange = { vm.change_Load_Density(it)},
-                                                                      modifier = Modifier.padding(),
-                                                                      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                                                     // label = {Text("Load Density")}
-                                                            )
-                                                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
-                                                            Text("Filled Litres")
-                                                            OutlinedTextField(
-                                                                      value = vm.changeLitres,
-                                                                      onValueChange = { vm.change_Litres(it)},
-                                                                      modifier = Modifier.padding(),
-                                                                      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                                                     // label = {Text("Load Density")}
-                                                            )
-                                                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
-                                                            Text("Tolerance")
-                                                            OutlinedTextField(
-                                                                      value = vm.changeTolerance,
-                                                                      onValueChange = { vm.change_Tolerance(it)},
-                                                                      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                                                      placeholder = { }
-                                                            )
-                                                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
-                                                            Text("Cylinder ID")
-                                                            OutlinedTextField(
-                                                                      value = vm.changeCylinderID,
-                                                                      onValueChange = { vm.changeCylinderID(it)},
-                                                                      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                                                            )
-                                                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
-                                                            Text("Empty")
-                                                            OutlinedTextField(
-                                                                      value = vm.changeEmpty,
-                                                                      onValueChange = { vm.change_Empty(it)},
-                                                                      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                                                            )
-                                                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
-                                                            Text("Final")
-                                                            OutlinedTextField(
-                                                                      value = vm.changeFinal,
-                                                                      onValueChange = { vm.change_Final(it)},
-                                                                      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                                                            )
-                                                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
-                                                            Text("${vm.changeDifference}")
-                                                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
-                                                            Text("${vm.changeExpectedLitres}")
-                                                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
-                                                            Text("${vm.changeDM}")
-                                                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
-                                                            Text("Full")
-                                                            OutlinedTextField(
-                                                                      value = vm.changeFull,
-                                                                      onValueChange = { vm.change_Full(it)},
-                                                            )
-                                                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
-                                                            Text("Side")
-                                                            OutlinedTextField(
-                                                                      value = vm.changeSide,
-                                                                      onValueChange = { vm.change_Side(it)},
-                                                                      keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                                                            )
-                                                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
-                                                            Text("Model")
-                                                            OutlinedTextField(
-                                                                      value = vm.changeDispenserModel,
-                                                                      onValueChange = { vm.change_Dispenser_Model(it)}
-                                                            )
-                                                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
-                                                            Text("Temp")
-                                                            OutlinedTextField(
-                                                                      value = vm.changeTemperature,
-                                                                      onValueChange = { vm.change_Temperature(it)}
-                                                            )
-                                                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
-                                                            Text("Disp. SN")
-                                                            OutlinedTextField(
-                                                                      value = vm.changeDispenserSN,
-                                                                      onValueChange = { vm.change_Dispenser_SN(it)},
-                                                            )
-                                                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
-                                                            Text("Station")
-                                                            OutlinedTextField(
-                                                                      value = vm.changeStation,
-                                                                      onValueChange = { vm.change_Station(it)},
-                                                                      keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Characters)
-                                                            )
-                                                            Spacer(modifier = Modifier.padding(bottom = 260.dp))
-                                                  }
-                              }
+                        val sideSpacing = 30.dp
+                        Column(modifier = Modifier.verticalScroll(vscroll).padding(start = sideSpacing)) {
+                            Text("Load Density")
+                            OutlinedTextField(
+                                value = vm.changeLoadDensity,
+                                onValueChange = { vm.change_Load_Density(it)},
+                                modifier = Modifier.padding(),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            )
+                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                            Text("Filled Litres")
+                            OutlinedTextField(
+                                value = vm.changeLitres,
+                                onValueChange = { vm.change_Litres(it)},
+                                modifier = Modifier.padding(),
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                            )
+                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                            Text("Tolerance")
+                            OutlinedTextField(
+                                value = vm.changeTolerance,
+                                onValueChange = { vm.change_Tolerance(it)},
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                placeholder = { }
+                            )
+                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                            Text("Cylinder ID")
+                            OutlinedTextField(
+                                value = vm.changeCylinderID,
+                                onValueChange = { vm.changeCylinderID(it)},
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                            )
+                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                            Text("Empty")
+                            OutlinedTextField(
+                                value = vm.changeEmpty,
+                                onValueChange = { vm.change_Empty(it)},
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                            )
+                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                            Text("Final")
+                            OutlinedTextField(
+                                value = vm.changeFinal,
+                                onValueChange = { vm.change_Final(it)},
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                            )
+                            // Text("${vm.changeDifference}")
+                            // Text("${vm.changeExpectedLitres}")
+                            // Text("${vm.changeDM}")
+                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                            Text("Full")
+                            OutlinedTextField(
+                                value = vm.changeFull,
+                                onValueChange = { vm.change_Full(it)},
+                            )
+                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                            Text("Side")
+                            OutlinedTextField(
+                                value = vm.changeSide,
+                                onValueChange = { vm.change_Side(it)},
+                                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                            )
+                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                            Text("Model")
+                            OutlinedTextField(
+                                value = vm.changeDispenserModel,
+                                onValueChange = { vm.change_Dispenser_Model(it)}
+                            )
+                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                            Text("Temp")
+                            OutlinedTextField(
+                                value = vm.changeTemperature,
+                                onValueChange = { vm.change_Temperature(it)}
+                            )
+                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                            Text("Disp. SN")
+                            OutlinedTextField(
+                                value = vm.changeDispenserSN,
+                                onValueChange = { vm.change_Dispenser_SN(it)},
+                            )
+                            Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                            Text("Station")
+                            OutlinedTextField(
+                                value = vm.changeStation,
+                                onValueChange = { vm.change_Station(it)},
+                                keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Characters)
+                            )
+                            Spacer(modifier = Modifier.padding(bottom = 360.dp))
+
+                        }
                     }
           }
 
+          @SuppressLint("ResourceType")
           @Composable
-          fun EachCard(cal: EachCardState, vm: MyScreensVM){
+          fun EachCard(cal: EachCardState, vm: MyScreensVM, context: Context){
                     Card(modifier = Modifier.padding(start = 5.dp)) {
                               Row(modifier = Modifier.padding(start = 5.dp)) {
                                         Text("Load Density:")
@@ -334,12 +320,12 @@ import kotlin.math.nextUp
                                         Text(  cal.cylinderId, )
                               }
                               Row(modifier = Modifier.padding(start = 5.dp)) {
-                                        Text("Empty:")
+                                        Text("Empty(kg):")
                                         Spacer(modifier = Modifier.padding(10.dp))
                                         Text(  cal.Empty )
                               }
                               Row(modifier = Modifier.padding(start = 5.dp)) {
-                                        Text("Final:")
+                                        Text("Final(kg):")
                                         Spacer(modifier = Modifier.padding(10.dp))
                                         Text(  cal.Final, )
                               }
@@ -390,6 +376,21 @@ import kotlin.math.nextUp
                                         Spacer(modifier = Modifier.padding(10.dp))
                                         Text(  cal.Station, )
                               }
+                        Row(modifier = Modifier.padding(start = 5.dp)) {
+                            Text("State:")
+                            Spacer(modifier = Modifier.padding(10.dp))
+                            if (screenActions(vm).calculateDM() in 1.2..1.35) {
+                                Image(
+                                    painter = painterResource(id = R.drawable.checkmark),
+                                    contentDescription = "Description of the image"
+                                )
+                            }else{
+                                Image(
+                                    painter = painterResource(id = R.drawable.icons8),
+                                    contentDescription = "Description of the image"
+                                )
+                            }
+                        }
                     }
           }
 
