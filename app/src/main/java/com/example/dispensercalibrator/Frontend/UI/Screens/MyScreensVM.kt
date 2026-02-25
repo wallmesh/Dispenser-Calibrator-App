@@ -34,6 +34,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MyScreensVM @Inject constructor (val dao: MainDAO, var mydata: CalibrationTest): ViewModel() {
 
+
           //   Write to csv file
           @RequiresApi(Build.VERSION_CODES.TIRAMISU)
            suspend fun writeToCSV(service: Drive, accessToken: String) {
@@ -70,7 +71,7 @@ class MyScreensVM @Inject constructor (val dao: MainDAO, var mydata: Calibration
           var changeTemperature by mutableStateOf("")
           var changeDispenserSN by mutableStateOf("")
           var changeFull by mutableStateOf("")
-          var changeStation by mutableStateOf("")
+          var changeStation by mutableStateOf("Swedru")
 
 
           //  SET THE VALUES FOR THE VARIABLES USED TO UPLOAD DATA TO THE ROOM DB

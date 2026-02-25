@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.dispensercalibrator.Backend.Room.MainDAO
 import com.example.dispensercalibrator.Backend.Room.RoomItemsDatabase
+import com.example.dispensercalibrator.Frontend.UI.Screens.Stations
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
 import com.google.api.client.json.gson.GsonFactory
 import com.google.api.services.drive.Drive
@@ -59,6 +60,12 @@ object DiModule {
           fun provideContext(@ApplicationContext myContext: Context): Context {
                     return myContext
           }
+
+          /*@Singleton
+          @Provides
+          fun provideStations(stations: Stations): Stations {
+                    return Stations.SWEDRU
+          }*/
 
          /* val driveInit =
                     Drive.Builder(

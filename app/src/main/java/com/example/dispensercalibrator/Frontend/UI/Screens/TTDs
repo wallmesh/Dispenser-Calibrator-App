@@ -1,8 +1,17 @@
-1.	implement Room
-2.	Create a Ui and a VM to hold the state
+1.	implement Room -Done
+2.	Create a Ui and a VM to hold the state - Done
 3.	create mock Room data - done
 2.	Test the successful transfer fo data form Room to Google Sheets
 3.	Test the response from the Http server upon a successful update to Google sheets
 4.	Test a successful deletion of items from the Room db after receiving a successful delivery to Google Sheets response form the 	Http server
 5. Pass the data form GoogleSheets to Bigquery so we can run analysis on the data- find patters etc between calibrations
 6. Add a loading spinner when the button to insert data is clicked
+
+
+Logs
+1.  We are supposed to use Dependency Injection to create a singleton instance of the Stations class so that each modification would be
+    propagated all across the app wherever it called. This ensures that any other variable or functions relying on it all produce the same
+    outcome. However KSP PROCESSING ERROR is preventing me form doing this since it throws this error when the enum class is given
+    the @Inject constructor() annotation, which is required btw in order to inject it and this create a singleton instance of it.
+
+    So in the meantime ive resorted to using a object declaration to create the singleton and achieve this purpose.
