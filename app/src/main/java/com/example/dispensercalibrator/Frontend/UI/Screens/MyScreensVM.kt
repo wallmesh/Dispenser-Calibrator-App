@@ -1,13 +1,11 @@
 package com.example.dispensercalibrator.Frontend.UI.Screens
 
 import android.content.Context
-import android.content.Intent
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -20,9 +18,7 @@ import com.example.dispensercalibrator.Backend.Whatsapp.ShareToWhatsapp
 import com.google.api.services.drive.Drive
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -63,7 +59,7 @@ class MyScreensVM @Inject constructor (val dao: MainDAO, var mydata: Calibration
           var changeDifference by mutableDoubleStateOf(0.0)
           var changeTolerance by mutableStateOf("")
           var changeDM by mutableDoubleStateOf(0.0)
-          var changeLitres by mutableStateOf("")
+          var changeLitresFilled by mutableStateOf("")
           var changeExpectedLitres by mutableDoubleStateOf(0.0)
           var changeSide by mutableStateOf("")
           var changeDispenserModel by mutableStateOf("")
@@ -71,7 +67,7 @@ class MyScreensVM @Inject constructor (val dao: MainDAO, var mydata: Calibration
           var changeTemperature by mutableStateOf("")
           var changeDispenserSN by mutableStateOf("")
           var changeFull by mutableStateOf("")
-          var changeStation by mutableStateOf("Swedru")
+          var changeStation by mutableStateOf("")
 
 
           //  SET THE VALUES FOR THE VARIABLES USED TO UPLOAD DATA TO THE ROOM DB
@@ -82,7 +78,7 @@ class MyScreensVM @Inject constructor (val dao: MainDAO, var mydata: Calibration
                     mydata.Difference = changeDifference.toString()
                     mydata.Tolerance = changeTolerance
                     mydata.DM = changeDM.toString()
-                    mydata.Litres = changeLitres
+                    mydata.Litres = changeLitresFilled
                     mydata.ExpectedLitres = changeExpectedLitres.toString()
                     mydata.Side = changeSide
                     mydata.DispenserModel = changeDispenserModel
@@ -127,7 +123,7 @@ class MyScreensVM @Inject constructor (val dao: MainDAO, var mydata: Calibration
                     instance.setDM()
           }
           fun change_Litres(input: String){
-                    changeLitres = input
+                    changeLitresFilled = input
           }
           fun change_Expected_Litres(){
                     val instance = screenActions(this)

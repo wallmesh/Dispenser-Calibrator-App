@@ -5,45 +5,36 @@ import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import com.example.dispensercalibrator.Backend.MyCustomGenericDropdownMenu
 import com.example.dispensercalibrator.Backend.Room.EachCardState
 import com.example.dispensercalibrator.MainActivity
 import com.example.dispensercalibrator.R
@@ -52,16 +43,22 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import java.math.BigDecimal
 import java.math.RoundingMode
-import javax.inject.Inject
 
 // TTDs
 // 1. Display the data automatically
 
 
+@OptIn(ExperimentalMaterial3Api::class)
 @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
           @Composable
           fun OverviewScreen(vm: MyScreensVM, context: Context, onNavigateToDataEntryScreen: ()->Unit, activity: MainActivity) {
                     Scaffold(
+                              topBar = {
+                                        TopAppBar(
+                                                  title = {"Data Screen"},
+                                                  navigationIcon = { Image()}
+                                        )
+                              },
                               bottomBar = {
                                         BottomAppBar {
                                                   Button({
@@ -205,6 +202,12 @@ import javax.inject.Inject
                                                             Text("Station")
                                                             Spacer(modifier = Modifier.padding(bottom = 240.dp))                                                  }
                                         }*/
+                              val tempOptions = mutableListOf("Cool", "Warm")
+                              val fullOptions = mutableListOf("Yes", "No")
+                              val sideOptions = mutableListOf("1", "2")
+                              val stationOptions = mutableListOf("SITE", "SWEDRU", "MG", "MILLILORD", "NKROANZA", "JUKWA", "OBAAPA", "MAMPONG")
+                              val litresFilledOptions = mutableListOf("6.25", "12.5", "25")
+
                               val sideSpacing = 30.dp
                               Column(modifier = Modifier
                                         .verticalScroll(vscroll)
@@ -217,14 +220,11 @@ import javax.inject.Inject
                                                   keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                         )
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
-                                        Text("Filled Litres")
-                                        OutlinedTextField(
-                                                  value = vm.changeLitres,
-                                                  onValueChange = { vm.change_Litres(it)},
-                                                  modifier = Modifier.padding(),
-                                                  keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                        )
+
+                                        Text("Litres Filled")
+                                        MyCustomGenericDropdownMenu(vm, litresFilledOptions, "Litres Filled").MainMenu()
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
+
                                         Text("Tolerance")
                                         OutlinedTextField(
                                                   value = vm.changeTolerance,
@@ -233,6 +233,7 @@ import javax.inject.Inject
                                                   placeholder = { }
                                         )
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
+
                                         Text("Cylinder ID")
                                         OutlinedTextField(
                                                   value = vm.changeCylinderID,
@@ -240,6 +241,7 @@ import javax.inject.Inject
                                                   keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                                         )
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
+
                                         Text("Empty")
                                         OutlinedTextField(
                                                   value = vm.changeEmpty,
@@ -247,6 +249,7 @@ import javax.inject.Inject
                                                   keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                                         )
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
+
                                         Text("Final")
                                         OutlinedTextField(
                                                   value = vm.changeFinal,
@@ -254,97 +257,41 @@ import javax.inject.Inject
                                                   keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                                         )
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
+
                                         Text("Full")
-                                        OutlinedTextField(
-                                                  value = vm.changeFull,
-                                                  onValueChange = { vm.change_Full(it)},
-                                        )
+                                        MyCustomGenericDropdownMenu(vm, fullOptions, "Full").MainMenu()
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
+
                                         Text("Side")
-                                        OutlinedTextField(
-                                                  value = vm.changeSide,
-                                                  onValueChange = { vm.change_Side(it)},
-                                                  keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                                        )
+                                        MyCustomGenericDropdownMenu(vm, sideOptions, "Side").MainMenu()
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
+
+                                        Text("Temperature")
+                                        MyCustomGenericDropdownMenu(vm, tempOptions, "Temperature").MainMenu()
+                                        Spacer(modifier = Modifier.padding(bottom = 10.dp))
+
                                         Text("Model")
                                         OutlinedTextField(
                                                   value = vm.changeDispenserModel,
                                                   onValueChange = { vm.change_Dispenser_Model(it)}
                                         )
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
-                                        Text("Temp")
-                                        OutlinedTextField(
-                                                  value = vm.changeTemperature,
-                                                  onValueChange = { vm.change_Temperature(it)}
-                                        )
-                                        Spacer(modifier = Modifier.padding(bottom = 10.dp))
+
                                         Text("Disp. SN")
                                         OutlinedTextField(
                                                   value = vm.changeDispenserSN,
                                                   onValueChange = { vm.change_Dispenser_SN(it)},
                                         )
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
-                                        /*Text("Station")
-                                        OutlinedTextField(
-                                                  value = vm.changeStation,
-                                                  onValueChange = { vm.change_Station(it)},
-                                                  keyboardOptions = KeyboardOptions(capitalization = KeyboardCapitalization.Characters)
-                                        )*/
 
-                                        var expanded by remember{mutableStateOf(false)}
-                                        fun stations(){
-                                                  vm.changeStation = when(station_obj.currentStation ){
-                                                            Stations.SWEDRU  -> "Swedru"
-                                                            Stations.MILL -> "Mill"
-                                                            Stations.MG -> "MG"
-                                                  }
-                                        }
                                         Text("Station")
-                                        Box(modifier =Modifier.fillMaxSize()){
-                                                  OutlinedButton(
-                                                            onClick = {
-                                                                                expanded =!expanded
-                                                                                println("THE CURRENT STATION 1 IS: ${station_obj.currentStation}")
-                                                                      },
-                                                            shape = RoundedCornerShape(10),
-                                                            modifier = Modifier.width(280.dp).height(55.dp)
-                                                  ) {
-                                                            Image(painterResource(R.drawable.down), contentDescription = "down")
-                                                            Text(vm.changeStation)
-                                                  }
-                                                  DropdownMenu(expanded, {expanded = false}, modifier = Modifier.width(150.dp)) {
-                                                            DropdownMenuItem(
-                                                                      text = { Text("Mill") },
-                                                                      onClick = {
-                                                                                station_obj.currentStation = Stations.MILL
-                                                                                stations()
-                                                                                expanded = false
-                                                                      }
-                                                            )
-                                                            DropdownMenuItem(
-                                                                      text = { Text("MG") },
-                                                                      onClick = {
-                                                                                station_obj.currentStation = Stations.MG
-                                                                                stations()
-                                                                                expanded = false
-                                                                      }
-                                                            )
-                                                  }
-                                        }
+                                        MyCustomGenericDropdownMenu(vm, stationOptions, "Station").MainMenu()
                                         Spacer(modifier = Modifier.padding(bottom = 360.dp))
                               }
                     }
           }
 
-object station_obj {
-          var currentStation = Stations.SWEDRU
-}
-enum class Stations {
-          SWEDRU,
-          MG,
-          MILL
-}
+
 
           @SuppressLint("ResourceType")
           @Composable
@@ -499,12 +446,12 @@ class screenActions(val vm: MyScreensVM){
           }
 
           fun calculateExpctdkg(): Double {
-                   val compute = if ( vm.changeLoadDensity.isEmpty() ||  vm.changeLitres.isEmpty()){
+                   val compute = if ( vm.changeLoadDensity.isEmpty() ||  vm.changeLitresFilled.isEmpty()){
                            //   TODO(implement a TOAST here alerting the user that the field is empty)
                              return 0.0
                     }else{
                               val LoadDensityAsDouble:Double =  vm.changeLoadDensity.toDouble()
-                              val LitresAsDouble: Double = vm.changeLitres.toDouble()
+                              val LitresAsDouble: Double = vm.changeLitresFilled.toDouble()
                               val unroundedResult = LoadDensityAsDouble * LitresAsDouble
                              val finalResult = unroundedResult.roundToTwoDecimalPlaces().toDouble()
                              finalResult

@@ -4,11 +4,6 @@ import android.content.Context
 import androidx.room.Room
 import com.example.dispensercalibrator.Backend.Room.MainDAO
 import com.example.dispensercalibrator.Backend.Room.RoomItemsDatabase
-import com.example.dispensercalibrator.Frontend.UI.Screens.Stations
-import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport
-import com.google.api.client.json.gson.GsonFactory
-import com.google.api.services.drive.Drive
-import com.google.auth.http.HttpCredentialsAdapter
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -75,6 +70,48 @@ object DiModule {
                                         credentials
                               )
                     ).build()*/
+
+
+          /* fun optionSelector(){
+                   stateOfCalibrationDetail = when(Options_obj.currentOption ){
+                             MenuOptions.dropDownOption1  -> suppliedMenuOptions.component1()
+                             MenuOptions.dropDownOption2 -> suppliedMenuOptions.component2()
+                             MenuOptions.dropDownOption3 -> suppliedMenuOptions.component3()
+                             else -> "no element"
+                   }
+         }*/
+
+          /* object Options_obj {
+                   var currentOption = MenuOptions.dropDownOption1
+         }
+         enum class MenuOptions {
+                   dropDownOption1,
+                   dropDownOption2,
+                   dropDownOption3,
+                   dropDownOption4
+         }*/
+
+          /* DropdownMenuItem(
+                                                modifier = Modifier.width(280.dp),
+                                                text = { Text(suppliedMenuOptions.component2()) },
+                                                onClick = {
+                                                          Options_obj.currentOption = MenuOptions.dropDownOption2
+                                                          optionSelector()
+                                                          expanded = false
+                                                          println("THE CURRENT STATION 2 IS: ${Options_obj.currentOption}")
+                                                }
+                                      )*/
+
+          /*  DropdownMenuItem(
+                                                 modifier = Modifier.width(280.dp),
+                                                 text = { Text(suppliedMenuOptions.component3()) },
+                                                 onClick = {
+                                                           Options_obj.currentOption = MenuOptions.dropDownOption3
+                                                           optionSelector()
+                                                           expanded = false
+                                                           println("THE CURRENT STATION 2 IS: ${Options_obj.currentOption}")
+                                                 }
+                                       )*/
 
 
 }
