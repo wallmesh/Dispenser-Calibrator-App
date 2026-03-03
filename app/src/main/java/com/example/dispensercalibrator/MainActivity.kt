@@ -11,6 +11,7 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
 import com.example.dispensercalibrator.Frontend.UI.Screens.MyHost
 import com.example.dispensercalibrator.Frontend.UI.Screens.MyScreensVM
+import com.example.dispensercalibrator.ui.theme.DispenserCalibratorTheme
 import com.google.android.gms.auth.api.identity.AuthorizationRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.common.api.ApiException
@@ -50,15 +52,18 @@ class MainActivity : ComponentActivity() {
                     super.onCreate(savedInstanceState)
                     enableEdgeToEdge()
                     setContent {
-                              val thisActivity = this
+                              DispenserCalibratorTheme{
+                                       // isSystemInDarkTheme()
+                                        val thisActivity = this
                                         Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                                                   Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize().padding(innerPadding)) {
 
                                                             val controller = rememberNavController()
                                                             MyHost(controller, vm, thisActivity, applicationContext)
-
                                                   }
                                         }
+                              }
+
                     }
           }
 

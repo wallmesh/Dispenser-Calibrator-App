@@ -5,35 +5,59 @@ import android.content.Context
 import android.os.Build
 import androidx.annotation.RequiresApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContent
+import androidx.compose.foundation.layout.statusBarsPadding
+import androidx.compose.foundation.layout.systemBars
+import androidx.compose.foundation.layout.waterfall
+import androidx.compose.foundation.layout.windowInsetsEndWidth
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomAppBar
+import androidx.compose.material3.BottomAppBarDefaults
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.MediumTopAppBar
+import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarColors
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowInsetsCompat.Type.systemBars
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.room.util.TableInfo
 import com.example.dispensercalibrator.Backend.MyCustomGenericDropdownMenu
 import com.example.dispensercalibrator.Backend.Room.EachCardState
 import com.example.dispensercalibrator.MainActivity
@@ -56,7 +80,7 @@ import java.math.RoundingMode
                               topBar = {
                                         TopAppBar(
                                                   title = {"Data Screen"},
-                                                  navigationIcon = { Image()}
+                                                  navigationIcon = { Image(painterResource(R.drawable.back_arrow),  contentDescription = "back")}
                                         )
                               },
                               bottomBar = {
@@ -130,35 +154,67 @@ import java.math.RoundingMode
                     }
           }
 
-
+          @OptIn(ExperimentalMaterial3Api::class)
           @Composable
           fun DataEntryScreen(vm: MyScreensVM, onNavigateToOverviewScreen:()->Unit){
                     val vscroll = rememberScrollState()
                     Scaffold (
+                              modifier = Modifier.background(Color.White),
+                              containerColor = MaterialTheme.colorScheme.background,
+                            //  contentColor = Color.White,
+                              topBar = {
+                                        TopAppBar(
+                                                  title = {Text("Dispenser Calibrator", color = Color.White)},
+                                                  expandedHeight = 10.dp,
+                                                   modifier = Modifier.padding(bottom = 20.dp),
+                                                 // navigationIcon = { Image(painterResource(R.drawable.back_arrow),  contentDescription = "back")},
+                                                  colors = TopAppBarColors(containerColor = Color.DarkGray, Color.Blue, Color.Blue,Color.White,Color.Blue,Color.Blue ),
+                                        )
+                              },
                               bottomBar = {
-                                        BottomAppBar(modifier = Modifier
-                                                  .fillMaxWidth()
-                                                  .height(100.dp)) {
-                                                  Button(
-                                                            onClick = {
-                                                                      // save data to Room DB
-                                                                      vm.setRoomData()
-                                                                      vm.pushToRoomDB()
+                                       /* Button(
+                                                  onClick = {
+                                                            // save data to Room DB
+                                                            vm.setRoomData()
+                                                            vm.pushToRoomDB()
 
-                                                                      vm.change_Expected_Litres()
-                                                                      vm.change_Difference()
-                                                                      vm.change_DM()
+                                                            vm.change_Expected_Litres()
+                                                            vm.change_Difference()
+                                                            vm.change_DM()
 
-                                                                      // Then Navigate to OverviewScreen
-                                                                      onNavigateToOverviewScreen()
-                                                            },
-                                                            modifier = Modifier
-                                                                      .height(50.dp)
-                                                                      .padding(start = 150.dp)
-                                                  ) {
-                                                            Text("Go to Overview Screen")  // Pressing this button finest saves the data to Room db before navigating to the Overview Screen
+                                                            // Then Navigate to OverviewScreen
+                                                            onNavigateToOverviewScreen()
+                                                  },
+                                                  modifier = Modifier.padding(start = 150.dp, top = 50.dp)
+                                        ) {
+                                                  Text("Go to Overview Screen")  // Pressing this button finest saves the data to Room db before navigating to the Overview Screen
+                                        }*/
+                                        BottomAppBar(
+                                                //  windowInsets = WindowInsets.systemBars,
+                                               //   modifier = Modifier.height(50.dp),
+                                               //   contentPadding = PaddingValues(50.dp),
+                                                  actions = {
+                                                            Row (verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.Start, modifier = Modifier.height(40.dp)) {
+                                                                      Button(
+                                                                                onClick = {
+                                                                                          // save data to Room DB
+                                                                                          vm.setRoomData()
+                                                                                          vm.pushToRoomDB()
+
+                                                                                          vm.change_Expected_Litres()
+                                                                                          vm.change_Difference()
+                                                                                          vm.change_DM()
+
+                                                                                          // Then Navigate to OverviewScreen
+                                                                                          onNavigateToOverviewScreen()
+                                                                                },
+                                                                              //  modifier = Modifier.padding(start = 150.dp, top = 50.dp)
+                                                                      ) {
+                                                                                Text("Go to Overview Screen")  // Pressing this button finest saves the data to Room db before navigating to the Overview Screen
+                                                                      }
+                                                            }
                                                   }
-                                        }
+                                        )
                               }
                     ){ innerPadding ->
 
@@ -211,80 +267,86 @@ import java.math.RoundingMode
                               val sideSpacing = 30.dp
                               Column(modifier = Modifier
                                         .verticalScroll(vscroll)
-                                        .padding(start = sideSpacing)) {
-                                        Text("Load Density")
+                                        .padding(innerPadding)) {
+                                        Text("Load Density",  modifier = Modifier.padding(start = sideSpacing),)
                                         OutlinedTextField(
                                                   value = vm.changeLoadDensity,
                                                   onValueChange = { vm.change_Load_Density(it)},
-                                                  modifier = Modifier.padding(),
+                                                  modifier = Modifier.padding(start = sideSpacing),
                                                   keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                         )
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        Text("Litres Filled")
+                                        Text("Litres Filled",  modifier = Modifier.padding(start = sideSpacing),)
                                         MyCustomGenericDropdownMenu(vm, litresFilledOptions, "Litres Filled").MainMenu()
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        Text("Tolerance")
+                                        Text("Tolerance",  modifier = Modifier.padding(start = sideSpacing),)
                                         OutlinedTextField(
                                                   value = vm.changeTolerance,
                                                   onValueChange = { vm.change_Tolerance(it)},
+                                                  modifier = Modifier.padding(start = sideSpacing),
                                                   keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                                                   placeholder = { }
                                         )
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        Text("Cylinder ID")
+                                        Text("Cylinder ID",  modifier = Modifier.padding(start = sideSpacing),)
                                         OutlinedTextField(
                                                   value = vm.changeCylinderID,
                                                   onValueChange = { vm.changeCylinderID(it)},
+                                                  modifier = Modifier.padding(start = sideSpacing),
                                                   keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                                         )
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        Text("Empty")
+                                        Text("Empty",  modifier = Modifier.padding(start = sideSpacing),)
                                         OutlinedTextField(
                                                   value = vm.changeEmpty,
                                                   onValueChange = { vm.change_Empty(it)},
+                                                  modifier = Modifier.padding(start = sideSpacing),
                                                   keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                                         )
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        Text("Final")
+                                        Text("Final",  modifier = Modifier.padding(start = sideSpacing),)
                                         OutlinedTextField(
                                                   value = vm.changeFinal,
                                                   onValueChange = { vm.change_Final(it)},
+                                                  modifier = Modifier.padding(start = sideSpacing),
                                                   keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                                         )
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        Text("Full")
+                                        Text("Full",  modifier = Modifier.padding(start = sideSpacing),)
                                         MyCustomGenericDropdownMenu(vm, fullOptions, "Full").MainMenu()
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        Text("Side")
+                                        Text("Side",  modifier = Modifier.padding(start = sideSpacing),)
                                         MyCustomGenericDropdownMenu(vm, sideOptions, "Side").MainMenu()
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        Text("Temperature")
+                                        Text("Temperature",  modifier = Modifier.padding(start = sideSpacing),)
                                         MyCustomGenericDropdownMenu(vm, tempOptions, "Temperature").MainMenu()
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        Text("Model")
+                                        Text("Model",  modifier = Modifier.padding(start = sideSpacing),)
                                         OutlinedTextField(
                                                   value = vm.changeDispenserModel,
+                                                  modifier = Modifier.padding(start = sideSpacing),
                                                   onValueChange = { vm.change_Dispenser_Model(it)}
                                         )
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        Text("Disp. SN")
+                                        Text("Disp. SN",  modifier = Modifier.padding(start = sideSpacing),)
                                         OutlinedTextField(
                                                   value = vm.changeDispenserSN,
+                                                  modifier = Modifier.padding(start = sideSpacing),
                                                   onValueChange = { vm.change_Dispenser_SN(it)},
                                         )
                                         Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        Text("Station")
+                                        Text("Station",  modifier = Modifier.padding(start = sideSpacing),)
                                         MyCustomGenericDropdownMenu(vm, stationOptions, "Station").MainMenu()
                                         Spacer(modifier = Modifier.padding(bottom = 360.dp))
                               }
