@@ -1,7 +1,6 @@
 package com.example.dispensercalibrator.Backend
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,7 +23,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import com.example.dispensercalibrator.Frontend.UI.Screens.MyScreensVM
@@ -36,17 +34,28 @@ import javax.inject.Inject
 
 class MyCustomGenericDropdownMenu @Inject constructor(val vm: MyScreensVM, val suppliedListOfMenuOptions: List<String>, var nameOfCalibrationDetail:String) {
 
-          var clickedOption by mutableStateOf("Select option")
+          object holder{
+                    var temp_clickedOption by mutableStateOf("Select option")
+                    var full_clickedOption by mutableStateOf("Select option")
+                    var side_clickedOption by mutableStateOf("Select option")
+                    var station_clickedOption by mutableStateOf("Select option")
+                    var litresFilled_clickedOption by mutableStateOf("Select option")
+          }
+
+          object keeper{
+                    var hasBeenClicked by mutableStateOf(false)
+          }
           @Composable
           fun MainMenu(){
                     var expanded by remember{mutableStateOf(false)}
-                    var clickDetector by remember{mutableStateOf(false)}
+
+
 
                     @Composable
                     fun buttonBody(){
                               Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically){
-                                        if (clickDetector){
-                                                  Text(clickedOption, modifier = Modifier.width(120.dp), color = Color.Red)
+                                        if (keeper.hasBeenClicked){
+                                                  Text(holder.clickedOption, modifier = Modifier.width(120.dp), color = Color.Red)
                                         }else{
                                                   Text(nameOfCalibrationDetail, modifier = Modifier.width(120.dp), textDecoration = TextDecoration.Underline )
                                         }
@@ -69,8 +78,9 @@ class MyCustomGenericDropdownMenu @Inject constructor(val vm: MyScreensVM, val s
                                                   DropdownMenuItem(
                                                             text = { Text(it) },
                                                             onClick = {
-                                                                      clickDetector = true
-                                                                      clickedOption = it   // For the Data Entry Screen
+                                                                      keeper.hasBeenClicked = true
+                                                                      println("THE VALUE OF HASBEENCLICKED IS ${keeper.hasBeenClicked}")
+                                                                      holder.clickedOption = it   // For the Data Entry Screen
                                                                       fun optionSelector(){
                                                                                 when(nameOfCalibrationDetail ){    // For the Overview SCREEN
                                                                                           "cylinderID" -> vm.changeCylinderID = it
@@ -92,7 +102,7 @@ class MyCustomGenericDropdownMenu @Inject constructor(val vm: MyScreensVM, val s
                                                                       }
                                                                       optionSelector()
                                                                       println("THE VALUE IS $it")
-                                                                      println("THE parameter VALUE HAS CHANGED TO $clickedOption")
+                                                                      println("THE parameter VALUE HAS CHANGED TO ${holder.clickedOption}")
                                                                       println("THE TEMP VALUE IN THE VM IS ${vm.changeSide}")
                                                                       expanded = false
                                                             }

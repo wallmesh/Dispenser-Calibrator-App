@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.safeContent
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.systemBars
 import androidx.compose.foundation.layout.waterfall
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.windowInsetsEndWidth
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -33,6 +34,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.MediumTopAppBar
 import androidx.compose.material3.NavigationBar
@@ -170,29 +172,10 @@ import java.math.RoundingMode
                                                  // navigationIcon = { Image(painterResource(R.drawable.back_arrow),  contentDescription = "back")},
                                                   colors = TopAppBarColors(containerColor = Color.DarkGray, Color.Blue, Color.Blue,Color.White,Color.Blue,Color.Blue ),
                                         )
+                                        HorizontalDivider()
                               },
                               bottomBar = {
-                                       /* Button(
-                                                  onClick = {
-                                                            // save data to Room DB
-                                                            vm.setRoomData()
-                                                            vm.pushToRoomDB()
-
-                                                            vm.change_Expected_Litres()
-                                                            vm.change_Difference()
-                                                            vm.change_DM()
-
-                                                            // Then Navigate to OverviewScreen
-                                                            onNavigateToOverviewScreen()
-                                                  },
-                                                  modifier = Modifier.padding(start = 150.dp, top = 50.dp)
-                                        ) {
-                                                  Text("Go to Overview Screen")  // Pressing this button finest saves the data to Room db before navigating to the Overview Screen
-                                        }*/
-                                        BottomAppBar(
-                                                //  windowInsets = WindowInsets.systemBars,
-                                               //   modifier = Modifier.height(50.dp),
-                                               //   contentPadding = PaddingValues(50.dp),
+                                        /*BottomAppBar(
                                                   actions = {
                                                             Row (verticalAlignment = Alignment.Bottom, horizontalArrangement = Arrangement.Start, modifier = Modifier.height(40.dp)) {
                                                                       Button(
@@ -208,13 +191,41 @@ import java.math.RoundingMode
                                                                                           // Then Navigate to OverviewScreen
                                                                                           onNavigateToOverviewScreen()
                                                                                 },
-                                                                              //  modifier = Modifier.padding(start = 150.dp, top = 50.dp)
+                                                                                modifier = Modifier.padding(start = 150.dp, top = 50.dp)
                                                                       ) {
                                                                                 Text("Go to Overview Screen")  // Pressing this button finest saves the data to Room db before navigating to the Overview Screen
                                                                       }
                                                             }
+                                                  },
+                                        )*/
+
+                                        Surface(modifier = Modifier.fillMaxWidth()) {
+                                                  HorizontalDivider()
+                                                  Row(
+                                                            verticalAlignment = Alignment.CenterVertically,
+                                                            horizontalArrangement = Arrangement.Center,
+                                                            modifier = Modifier.height(60.dp).background(Color.Transparent)
+                                                  ) {
+                                                            Button(
+                                                                      onClick = {
+                                                                                // save data to Room DB
+                                                                                vm.setRoomData()
+                                                                                vm.pushToRoomDB()
+
+                                                                                vm.change_Expected_Litres()
+                                                                                vm.change_Difference()
+                                                                                vm.change_DM()
+
+                                                                                // Then Navigate to OverviewScreen
+                                                                                onNavigateToOverviewScreen()
+                                                                      },
+                                                                      modifier = Modifier.fillMaxWidth().padding(start = 5.dp, end = 5.dp)
+                                                            ) {
+                                                                      Text("Go to Overview Screen")  // Pressing this button finest saves the data to Room db before navigating to the Overview Screen
+                                                            }
                                                   }
-                                        )
+                                        }
+
                               }
                     ){ innerPadding ->
 
