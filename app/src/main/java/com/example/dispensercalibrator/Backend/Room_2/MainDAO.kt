@@ -1,9 +1,6 @@
-package com.example.dispensercalibrator.Backend.Room
+package com.example.dispensercalibrator.Backend.Room_2
 
 import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.OnConflictStrategy.Companion.REPLACE
 import androidx.room.Query
 import androidx.room.Upsert
 
@@ -15,7 +12,7 @@ interface MainDAO {
                     suspend fun Insert_CalibrationDetails(calibrationTestDetails2: CalibrationTest):Long
 
                     @Query("SELECT * FROM CalibrationTest")
-                    suspend fun retrieveAll(): List<EachCardState>
+                    suspend fun retrieveCalibrationResult(): EachCardState
 
 
 }

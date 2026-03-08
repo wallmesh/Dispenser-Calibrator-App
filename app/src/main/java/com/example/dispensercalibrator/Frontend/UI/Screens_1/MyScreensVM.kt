@@ -1,21 +1,16 @@
-package com.example.dispensercalibrator.Frontend.UI.Screens
+package com.example.dispensercalibrator.Frontend.UI.Screens_1
 
 import android.content.Context
-import android.os.Build
 import android.util.Log
-import androidx.annotation.RequiresApi
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.dispensercalibrator.Backend.Ktor.KtorMain
-import com.example.dispensercalibrator.Backend.Room.CalibrationTest
-import com.example.dispensercalibrator.Backend.Room.EachCardState
-import com.example.dispensercalibrator.Backend.Room.MainDAO
-import com.example.dispensercalibrator.Backend.Whatsapp.ShareToWhatsapp
-import com.google.api.services.drive.Drive
+import com.example.dispensercalibrator.Backend.Room_2.CalibrationTest
+import com.example.dispensercalibrator.Backend.Room_2.MainDAO
+import com.example.dispensercalibrator.Backend.Whatsapp_3.ShareToWhatsapp
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -32,21 +27,21 @@ class MyScreensVM @Inject constructor (val dao: MainDAO, var mydata: Calibration
 
 
           //   Write to csv file
-          @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+      /*    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
            suspend fun writeToCSV(service: Drive, accessToken: String) {
-                    lateinit var dataholder: List<EachCardState>
+                    lateinit var dataholder: EachCardState
                     viewModelScope.launch(Dispatchers.IO) {
-                                        dataholder = dao.retrieveAll()
+                                        dataholder = dao.retrieveCalibrationResult()
                                         val ktor = KtorMain().KtorInstance(body = dataholder, accessToken = accessToken, service = service)
                                         Log.d("chkOutput", "THE OUTPUT STREAM VALUE IS:${ktor}")
                     }
-          }
+          }*/
 
           //  Share to Whatsapp
            fun ShareToWhats(context: Context) {
                      val scope = this
                     viewModelScope.launch(Dispatchers.IO) {
-                              val whatsapp = ShareToWhatsapp(scope).trigger()
+                              val whatsapp = ShareToWhatsapp(scope, context).trigger()
                               context.startActivity(whatsapp)
                               Log.d("chkOutput2", "DATA SUCCESSFULLY SHARED TO WHATSAPP")
                     }
@@ -68,6 +63,7 @@ class MyScreensVM @Inject constructor (val dao: MainDAO, var mydata: Calibration
           var changeDispenserSN by mutableStateOf("")
           var changeFull by mutableStateOf("")
           var changeStation by mutableStateOf("")
+          var changeVisualResult by mutableStateOf("")
 
 
           //  SET THE VALUES FOR THE VARIABLES USED TO UPLOAD DATA TO THE ROOM DB
@@ -87,6 +83,7 @@ class MyScreensVM @Inject constructor (val dao: MainDAO, var mydata: Calibration
                     mydata.DispenserSN = changeDispenserSN
                     mydata.Full = changeFull
                     mydata.Station = changeStation
+                    mydata.VisualResult = changeVisualResult
           }
 
 
@@ -110,7 +107,7 @@ class MyScreensVM @Inject constructor (val dao: MainDAO, var mydata: Calibration
                     changeFinal = input
           }
           fun change_Difference(){
-                    val instance = screenActions(this)
+                    val instance = DependenciesForOverviewScreen(this)
                     instance.calculateDifference()
                     instance.setDifferenceValue()
           }
@@ -118,15 +115,16 @@ class MyScreensVM @Inject constructor (val dao: MainDAO, var mydata: Calibration
                     changeTolerance = input
           }
           fun change_DM(){
-                    val instance = screenActions(this)
+                    val instance = DependenciesForOverviewScreen(this)
                     instance.calculateDM()
                     instance.setDM()
+                    instance.setVisualResult()
           }
           fun change_Litres(input: String){
                     changeLitresFilled = input
           }
           fun change_Expected_Litres(){
-                    val instance = screenActions(this)
+                    val instance = DependenciesForOverviewScreen(this)
                     instance.calculateExpctdkg()
                     instance.setExpctdkg()
           }

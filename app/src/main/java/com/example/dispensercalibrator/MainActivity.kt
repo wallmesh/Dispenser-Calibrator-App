@@ -1,5 +1,9 @@
 package com.example.dispensercalibrator
 
+import android.Manifest
+import android.content.Context
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -11,18 +15,22 @@ import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
-import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.annotation.RequiresPermission
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SnackbarHost
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.rememberNavController
-import com.example.dispensercalibrator.Frontend.UI.Screens.MyHost
-import com.example.dispensercalibrator.Frontend.UI.Screens.MyScreensVM
+import com.example.dispensercalibrator.Frontend.UI.Screens_1.MyHost
+import com.example.dispensercalibrator.Frontend.UI.Screens_1.MyScreensVM
 import com.example.dispensercalibrator.ui.theme.DispenserCalibratorTheme
 import com.google.android.gms.auth.api.identity.AuthorizationRequest
 import com.google.android.gms.auth.api.identity.Identity
@@ -52,18 +60,56 @@ class MainActivity : ComponentActivity() {
                     super.onCreate(savedInstanceState)
                     enableEdgeToEdge()
                     setContent {
-                              DispenserCalibratorTheme{
-                                       // isSystemInDarkTheme()
-                                        val thisActivity = this
-                                        Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                                                  Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally, modifier = Modifier.fillMaxSize().padding(innerPadding)) {
 
-                                                            val controller = rememberNavController()
-                                                            MyHost(controller, vm, thisActivity, applicationContext)
+                              @RequiresPermission(Manifest.permission.ACCESS_NETWORK_STATE)
+                              fun isInternetAvailable(context: Context): Boolean {
+                                        val connectivityManager = context.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+                                        val network = connectivityManager.activeNetwork ?: return false
+                                        val capabilities = connectivityManager.getNetworkCapabilities(network) ?: return false
+
+                                        return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_INTERNET) &&
+                                            capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
+                              }
+
+                              val mySnackHost = remember{SnackbarHostState()}
+                              val scope = CoroutineScope(Dispatchers.IO)
+                              DispenserCalibratorTheme{
+                                        val thisActivity = this
+                                        Scaffold(
+                                                  snackbarHost = {
+                                                            SnackbarHost(mySnackHost)
+                                                  }
+                                        ) { innerPadding ->
+                                                  Column(
+                                                            verticalArrangement = Arrangement.Center,
+                                                            horizontalAlignment = Alignment.CenterHorizontally,
+                                                            modifier = Modifier.fillMaxSize().padding(innerPadding)
+                                                  )
+                                                  {
+                                                            println("Internet is available is ${isInternetAvailable(applicationContext)}")
+                                                            if (isInternetAvailable(applicationContext)){
+                                                                      val controller = rememberNavController()
+                                                                      MyHost(
+                                                                                controller,
+                                                                                vm,
+                                                                                thisActivity,
+                                                                                applicationContext,
+                                                                      )
+                                                            }else{
+                                                                      val controller = rememberNavController()
+                                                                      MyHost(
+                                                                                controller,
+                                                                                vm,
+                                                                                thisActivity,
+                                                                                applicationContext,
+                                                                      )
+                                                                      LaunchedEffect(Unit) {
+                                                                                scope.launch {mySnackHost.showSnackbar("Please check your internet connection")  }
+                                                                      }
+                                                            }
                                                   }
                                         }
                               }
-
                     }
           }
 
@@ -93,7 +139,7 @@ class MainActivity : ComponentActivity() {
                                                                       ).build()
 
                                                             println("EXECUTING THE AUTH-SCREEN METHOD")
-                                                            val vmInstance: MyScreensVM by viewModels()
+                                                            val vmInstance:  MyScreensVM by viewModels()
                                                             val scope = CoroutineScope(Dispatchers.IO).launch {
                                                                     //  vmInstance.writeToCSV(driveInit, token.toString())
                                                             }

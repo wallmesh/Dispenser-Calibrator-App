@@ -2,8 +2,8 @@ package com.example.dispensercalibrator.Backend.DI
 
 import android.content.Context
 import androidx.room.Room
-import com.example.dispensercalibrator.Backend.Room.MainDAO
-import com.example.dispensercalibrator.Backend.Room.RoomItemsDatabase
+import com.example.dispensercalibrator.Backend.Room_2.MainDAO
+import com.example.dispensercalibrator.Backend.Room_2.RoomItemsDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

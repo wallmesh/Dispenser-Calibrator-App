@@ -1,5 +1,5 @@
 
-package com.example.dispensercalibrator.Backend.Room
+package com.example.dispensercalibrator.Backend.Room_2
 
 
 import androidx.room.ColumnInfo
@@ -57,11 +57,12 @@ data class CalibrationTest @Inject constructor  (
           @ColumnInfo("DispenserSN") var DispenserSN: String,
           @ColumnInfo("Full") var Full: String,
           @ColumnInfo("Station") var Station: String,
+          @ColumnInfo("VisualResult") var VisualResult: String,
 )
 
 // @Singleton
 data class EachCardState @Inject constructor (
-          @PrimaryKey(autoGenerate = true) @ColumnInfo ("ID") var id: Int,
+          @ColumnInfo ("ID") var id: Int,
           @ColumnInfo("date") var date: String ,
           @ColumnInfo("cylinder_id") var cylinderId: String,
           @ColumnInfo("Empty") var Empty: String,
@@ -78,6 +79,7 @@ data class EachCardState @Inject constructor (
           @ColumnInfo("DispenserSN") var DispenserSN: String,
           @ColumnInfo("Full") var Full: String,
           @ColumnInfo("Station") var Station: String,
+          @ColumnInfo("VisualResult") var VisualResult: String,
 )
 
 

@@ -1,4 +1,4 @@
-package com.example.dispensercalibrator.Backend
+package com.example.dispensercalibrator.Frontend.UI.Screens_1
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
@@ -24,66 +24,73 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
-import com.example.dispensercalibrator.Frontend.UI.Screens.MyScreensVM
 import com.example.dispensercalibrator.R
 import javax.inject.Inject
 
 // TTDs
 //1.        The number of DropdownMenuItems() that are created should be dependent on the number menu options there are. It should correspond so it does not show only two options every time even if there are more. -- done
 
-class MyCustomGenericDropdownMenu @Inject constructor(val vm: MyScreensVM, val suppliedListOfMenuOptions: List<String>, var nameOfCalibrationDetail:String) {
+class MyCustomGenericDropdown_1a @Inject constructor(val vm: MyScreensVM, val suppliedListOfMenuOptions: List<String>, var nameOfCalibrationDetail:String) {
 
-          object holder{
-                    var temp_clickedOption by mutableStateOf("Select option")
-                    var full_clickedOption by mutableStateOf("Select option")
-                    var side_clickedOption by mutableStateOf("Select option")
-                    var station_clickedOption by mutableStateOf("Select option")
-                    var litresFilled_clickedOption by mutableStateOf("Select option")
-          }
-
-          object keeper{
+          object HasBeenClickedSingleton{
                     var hasBeenClicked by mutableStateOf(false)
           }
           @Composable
           fun MainMenu(){
-                    var expanded by remember{mutableStateOf(false)}
-
+                    var expanded by remember { mutableStateOf(false) }
 
 
                     @Composable
                     fun buttonBody(){
-                              Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically){
-                                        if (keeper.hasBeenClicked){
-                                                  Text(holder.clickedOption, modifier = Modifier.width(120.dp), color = Color.Red)
-                                        }else{
-                                                  Text(nameOfCalibrationDetail, modifier = Modifier.width(120.dp), textDecoration = TextDecoration.Underline )
+                              Row(modifier = Modifier.Companion.fillMaxSize(), verticalAlignment = Alignment.Companion.CenterVertically) {
+                                        if (HasBeenClickedSingleton.hasBeenClicked) {
+                                                  when (nameOfCalibrationDetail) {    // For the Overview SCREEN
+                                                            "CylinderID" -> Text(vm.changeCylinderID, modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
+                                                            "Empty" -> Text(vm.changeEmpty, modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
+                                                            "Final" -> Text(vm.changeFinal, modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
+                                                            "Difference" -> Text(vm.changeDifference.toString(), modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
+                                                            "Tolerance" -> Text(vm.changeTolerance, modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
+                                                            "DM" -> Text(vm.changeDM.toString(), modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
+                                                            "LitresFilled" -> Text(vm.changeLitresFilled, modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
+                                                            "ExpectedLiters" -> Text(vm.changeExpectedLitres.toString(), modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
+                                                            "Side" -> Text(vm.changeSide, modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
+                                                            "DispenserModel" -> Text(vm.changeDispenserModel, modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
+                                                            "LoadDensity" -> Text(vm.changeLoadDensity, modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
+                                                            "Temperature" -> Text(vm.changeTemperature, modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
+                                                            "DispenserSN" -> Text(vm.changeDispenserSN, modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
+                                                            "Full" -> Text(vm.changeFull, modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
+                                                            "Station" -> Text(vm.changeStation, modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
+                                                  }
+                                        } else {
+                                                  Text(nameOfCalibrationDetail, modifier = Modifier.Companion.width(120.dp), textDecoration = TextDecoration.Companion.Underline)
                                         }
-                                        Spacer(modifier = Modifier.padding(end = 80.dp))
+                                        Spacer(modifier = Modifier.Companion.padding(end = 50.dp))
                                         Image(painterResource(R.drawable.down_lean_arrowhead), contentDescription = "down")
                               }
                     }
                     val sideSpacing = 30.dp
-                    Box(modifier =Modifier.fillMaxSize()){
+                    Box(modifier = Modifier) {
                               OutlinedButton(
                                         onClick = {
-                                                  expanded =!expanded
+                                                  expanded = !expanded
                                         },
                                         shape = RoundedCornerShape(10),
-                                        modifier = Modifier.width(280.dp).height(55.dp).padding(start = sideSpacing),
+                                        modifier = Modifier.Companion.width(280.dp).height(55.dp).padding(start = sideSpacing),
                                         content = { buttonBody() }
                               )
-                              DropdownMenu(expanded, {expanded = false}, modifier = Modifier.width(280.dp)) {
+                              DropdownMenu(expanded, { expanded = false }, offset = DpOffset(29.dp,0.dp), modifier = Modifier.width(250.dp)) {
                                         suppliedListOfMenuOptions.forEach {
                                                   DropdownMenuItem(
+                                                            modifier = Modifier,
                                                             text = { Text(it) },
                                                             onClick = {
-                                                                      keeper.hasBeenClicked = true
-                                                                      println("THE VALUE OF HASBEENCLICKED IS ${keeper.hasBeenClicked}")
-                                                                      holder.clickedOption = it   // For the Data Entry Screen
-                                                                      fun optionSelector(){
-                                                                                when(nameOfCalibrationDetail ){    // For the Overview SCREEN
-                                                                                          "cylinderID" -> vm.changeCylinderID = it
+                                                                      HasBeenClickedSingleton.hasBeenClicked = true
+                                                                      println("THE VALUE OF HAS BEEN CLICKED IS ${HasBeenClickedSingleton.hasBeenClicked}")
+                                                                      fun optionSelector() {
+                                                                                when (nameOfCalibrationDetail) {    // For the Overview SCREEN
+                                                                                          "CylinderID" -> vm.changeCylinderID = it
                                                                                           "Empty" -> vm.changeEmpty = it
                                                                                           "Final" -> vm.changeFinal = it
                                                                                           "Difference" -> vm.changeDifference = it.toDouble()
@@ -102,7 +109,7 @@ class MyCustomGenericDropdownMenu @Inject constructor(val vm: MyScreensVM, val s
                                                                       }
                                                                       optionSelector()
                                                                       println("THE VALUE IS $it")
-                                                                      println("THE parameter VALUE HAS CHANGED TO ${holder.clickedOption}")
+                                                                      //   println("THE parameter VALUE HAS CHANGED TO ${holder.clickedOption}")
                                                                       println("THE TEMP VALUE IN THE VM IS ${vm.changeSide}")
                                                                       expanded = false
                                                             }
