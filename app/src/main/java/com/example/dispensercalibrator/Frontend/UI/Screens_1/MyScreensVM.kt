@@ -12,6 +12,8 @@ import com.example.dispensercalibrator.Backend.Room_2.CalibrationTest
 import com.example.dispensercalibrator.Backend.Room_2.MainDAO
 import com.example.dispensercalibrator.Backend.Whatsapp_3.ShareToWhatsapp
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.ktor.util.collections.getValue
+import io.ktor.util.collections.setValue
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -25,6 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MyScreensVM @Inject constructor (val dao: MainDAO, var mydata: CalibrationTest): ViewModel() {
 
+    var fillingCounter by mutableStateOf("")
 
           //   Write to csv file
       /*    @RequiresApi(Build.VERSION_CODES.TIRAMISU)

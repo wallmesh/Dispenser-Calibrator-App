@@ -21,6 +21,7 @@ import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledIconButton
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -224,7 +225,14 @@ import java.math.RoundingMode
                                   HorizontalDivider(modifier = Modifier.padding(bottom = 10.dp))
                                   Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                  Text("Cylinder Details", fontWeight = FontWeight.ExtraBold, fontStyle = FontStyle.Italic)
+                                  Row(verticalAlignment = Alignment.CenterVertically) {
+                                      Text("Cylinder Details", fontWeight = FontWeight.ExtraBold, fontStyle = FontStyle.Italic)
+
+                                      FilledIconButton(onClick = {}, modifier = Modifier.padding(start = 130.dp)) {
+                                          Text("hello world")
+                                      }
+                                  }
+
                                   Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
                                   Text("Filling (Lts)",  modifier = Modifier.padding(start = sideSpacing),)
@@ -263,7 +271,10 @@ import java.math.RoundingMode
                                   Row {
                                       OutlinedTextField(
                                           value = vm.changeCylinderID,
-                                          onValueChange = { vm.changeCylinderID(it)},
+                                          onValueChange = {
+                                              vm.changeCylinderID(it)
+                                              vm.fillingCounter = ""
+                                          },
                                           modifier = Modifier.padding(start = sideSpacing),
                                           keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
                                       )
