@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text.TextAutoSize
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Button
@@ -24,6 +25,7 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -34,7 +36,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -50,6 +56,7 @@ import java.math.RoundingMode
 // 1. Display the DM automatically -Done
 // 2. The data requires internet to work therefore use a try a catch block there to catch any errors stemming form the lack of internet connectivity
 // 3. Create a FAB button to clear all the fields an IconButtons to clear each field individually
+// 4. Put a counter at teh top right corner of the the data entry screen which shows how many times we've filled using the same id. So once the id changes, it resets.
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -214,161 +221,165 @@ import java.math.RoundingMode
                                         .padding(innerPadding)
                                         .background(Color.Transparent)
                               ) {
-                                        HorizontalDivider(modifier = Modifier.padding(bottom = 10.dp))
-                                        Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                                  HorizontalDivider(modifier = Modifier.padding(bottom = 10.dp))
+                                  Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        Text("Litres Filled(Lts)",  modifier = Modifier.padding(start = sideSpacing),)
-                                        MyCustomGenericDropdown_1a(vm, litresFilledOptions, "LitresFilled").MainMenu()
-                                        Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                                  Text("Cylinder Details", fontWeight = FontWeight.ExtraBold, fontStyle = FontStyle.Italic)
+                                  Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        Text("Tolerance",  modifier = Modifier.padding(start = sideSpacing))
-                                        Row {
-                                                  OutlinedTextField(
-                                                            value = vm.changeTolerance,
-                                                            onValueChange = { vm.change_Tolerance(it)},
-                                                            modifier = Modifier.padding(start = sideSpacing),
-                                                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                                            placeholder = { }
-                                                  )
-                                                  Spacer(modifier = Modifier.padding(start = 10.dp))
-                                                  IconButton(
-                                                            onClick = {
-                                                                      vm.changeTolerance = ""
-                                                            }
-                                                  ) {
-                                                            Icon(painterResource(R.drawable.icons8_clear_symbol_96), "clear")
-                                                  }
-                                        }
-                                        Spacer(modifier = Modifier.padding(start = 10.dp))
+                                  Text("Filling (Lts)",  modifier = Modifier.padding(start = sideSpacing),)
+                                  MyCustomGenericDropdown_1a(vm, litresFilledOptions, "LitresFilled").MainMenu()
+                                  Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        Text("Cylinder ID",  modifier = Modifier.padding(start = sideSpacing))
-                                        Row {
-                                                  OutlinedTextField(
-                                                            value = vm.changeCylinderID,
-                                                            onValueChange = { vm.changeCylinderID(it)},
-                                                            modifier = Modifier.padding(start = sideSpacing),
-                                                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                                                  )
-                                                  Spacer(modifier = Modifier.padding(start = 10.dp))
-                                                  IconButton(
-                                                            onClick = {
-                                                                      vm.changeCylinderID = ""
-                                                            }
-                                                  ) {
-                                                            Icon(painterResource(R.drawable.icons8_clear_symbol_96), "clear")
-                                                  }
-                                        }
-                                        Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                                  Text("is Last Fill",  modifier = Modifier.padding(start = sideSpacing),)
+                                  MyCustomGenericDropdown_1a(vm, fullOptions, "Full").MainMenu()
+                                  Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        Text("Full",  modifier = Modifier.padding(start = sideSpacing),)
-                                        MyCustomGenericDropdown_1a(vm, fullOptions, "Full").MainMenu()
-                                        Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                                  Text("Side",  modifier = Modifier.padding(start = sideSpacing),)
+                                  MyCustomGenericDropdown_1a(vm, sideOptions, "Side").MainMenu()
+                                  Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        Text("Side",  modifier = Modifier.padding(start = sideSpacing),)
-                                        MyCustomGenericDropdown_1a(vm, sideOptions, "Side").MainMenu()
-                                        Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                                  Text("Tolerance",  modifier = Modifier.padding(start = sideSpacing))
+                                  Row {
+                                      OutlinedTextField(
+                                          value = vm.changeTolerance,
+                                          onValueChange = { vm.change_Tolerance(it)},
+                                          modifier = Modifier.padding(start = sideSpacing),
+                                          keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                          placeholder = { }
+                                      )
+                                      Spacer(modifier = Modifier.padding(start = 10.dp))
+                                      IconButton(
+                                          onClick = {
+                                              vm.changeTolerance = ""
+                                          }
+                                      ) {
+                                          Icon(painterResource(R.drawable.icons8_clear_symbol_96), "clear")
+                                      }
+                                  }
+                                  Spacer(modifier = Modifier.padding(start = 10.dp))
 
-                                        Text("Empty(kg)",  modifier = Modifier.padding(start = sideSpacing))
-                                        Row {
-                                                  OutlinedTextField(
-                                                            value = vm.changeEmpty,
-                                                            onValueChange = { vm.change_Empty(it)},
-                                                            modifier = Modifier.padding(start = sideSpacing),
-                                                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                                                  )
-                                                  Spacer(modifier = Modifier.padding(start = 10.dp))
-                                                  IconButton(
-                                                            onClick = {
-                                                                      vm.changeEmpty = ""
-                                                            }
-                                                  ) {
-                                                            Icon(painterResource(R.drawable.icons8_clear_symbol_96), "clear")
-                                                  }
-                                        }
-                                        Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                                  Text("Cylinder ID",  modifier = Modifier.padding(start = sideSpacing))
+                                  Row {
+                                      OutlinedTextField(
+                                          value = vm.changeCylinderID,
+                                          onValueChange = { vm.changeCylinderID(it)},
+                                          modifier = Modifier.padding(start = sideSpacing),
+                                          keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                                      )
+                                      Spacer(modifier = Modifier.padding(start = 10.dp))
+                                      IconButton(
+                                          onClick = {
+                                              vm.changeCylinderID = ""
+                                          }
+                                      ) {
+                                          Icon(painterResource(R.drawable.icons8_clear_symbol_96), "clear")
+                                      }
+                                  }
+                                  Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        Text("Final(kg)",  modifier = Modifier.padding(start = sideSpacing))
-                                        Row {
-                                                  OutlinedTextField(
-                                                            value = vm.changeFinal,
-                                                            onValueChange = { vm.change_Final(it)},
-                                                            modifier = Modifier.padding(start = sideSpacing),
-                                                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
-                                                  )
-                                                  Spacer(modifier = Modifier.padding(start = 10.dp))
-                                                  IconButton(
-                                                            onClick = {
-                                                                      vm.changeFinal = ""
-                                                            }
-                                                  ) {
-                                                            Icon(painterResource(R.drawable.icons8_clear_symbol_96), "clear")
-                                                  }
-                                        }
-                                        Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                                  Text("Empty(kg)",  modifier = Modifier.padding(start = sideSpacing))
+                                  Row {
+                                      OutlinedTextField(
+                                          value = vm.changeEmpty,
+                                          onValueChange = { vm.change_Empty(it)},
+                                          modifier = Modifier.padding(start = sideSpacing),
+                                          keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                                      )
+                                      Spacer(modifier = Modifier.padding(start = 10.dp))
+                                      IconButton(
+                                          onClick = {
+                                              vm.changeEmpty = ""
+                                          }
+                                      ) {
+                                          Icon(painterResource(R.drawable.icons8_clear_symbol_96), "clear")
+                                      }
+                                  }
+                                  Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        HorizontalDivider(modifier = Modifier.padding(bottom = 10.dp))
+                                  Text("Final(kg)",  modifier = Modifier.padding(start = sideSpacing))
+                                  Row {
+                                      OutlinedTextField(
+                                          value = vm.changeFinal,
+                                          onValueChange = { vm.change_Final(it)},
+                                          modifier = Modifier.padding(start = sideSpacing),
+                                          keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number)
+                                      )
+                                      Spacer(modifier = Modifier.padding(start = 10.dp))
+                                      IconButton(
+                                          onClick = {
+                                              vm.changeFinal = ""
+                                          }
+                                      ) {
+                                          Icon(painterResource(R.drawable.icons8_clear_symbol_96), "clear")
+                                      }
+                                  }
+                                  Spacer(modifier = Modifier.padding(bottom = 25.dp))
 
-                                        Text("Temperature",  modifier = Modifier.padding(start = sideSpacing),)
-                                        MyCustomGenericDropdown_1a(vm, tempOptions, "Temperature").MainMenu()
-                                        Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                                  Text("Station Details", fontWeight = FontWeight.ExtraBold, fontStyle = FontStyle.Italic)
+                                  HorizontalDivider(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        Text("Load Density",  modifier = Modifier.padding(start = sideSpacing))
-                                        Row {
-                                                  OutlinedTextField(
-                                                            value = vm.changeLoadDensity,
-                                                            onValueChange = { vm.change_Load_Density(it)},
-                                                            modifier = Modifier.padding(start = sideSpacing),
-                                                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                                                  )
-                                                  Spacer(modifier = Modifier.padding(start = 10.dp))
-                                                  IconButton(
-                                                            onClick = {
-                                                                      vm.changeLoadDensity = ""
-                                                            }
-                                                  ) {
-                                                            Icon(painterResource(R.drawable.icons8_clear_symbol_96), "clear")
-                                                  }
-                                        }
+                                  Text("Temperature",  modifier = Modifier.padding(start = sideSpacing),)
+                                  MyCustomGenericDropdown_1a(vm, tempOptions, "Temperature").MainMenu()
+                                  Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        Text("Model",  modifier = Modifier.padding(start = sideSpacing))
-                                        Row {
-                                                  OutlinedTextField(
-                                                            value = vm.changeDispenserModel,
-                                                            modifier = Modifier.padding(start = sideSpacing),
-                                                            onValueChange = { vm.change_Dispenser_Model(it)}
-                                                  )
-                                                  Spacer(modifier = Modifier.padding(start = 10.dp))
-                                                  IconButton(
-                                                            onClick = {
-                                                                      vm.changeDispenserModel = ""
-                                                            }
-                                                  ) {
-                                                            Icon(painterResource(R.drawable.icons8_clear_symbol_96), "clear")
-                                                  }
-                                        }
-                                        Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                                  Text("Load Density",  modifier = Modifier.padding(start = sideSpacing))
+                                  Row {
+                                      OutlinedTextField(
+                                          value = vm.changeLoadDensity,
+                                          onValueChange = { vm.change_Load_Density(it)},
+                                          modifier = Modifier.padding(start = sideSpacing),
+                                          keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+                                      )
+                                      Spacer(modifier = Modifier.padding(start = 10.dp))
+                                      IconButton(
+                                          onClick = {
+                                              vm.changeLoadDensity = ""
+                                          }
+                                      ) {
+                                          Icon(painterResource(R.drawable.icons8_clear_symbol_96), "clear")
+                                      }
+                                  }
 
-                                        Text("Disp. SN",  modifier = Modifier.padding(start = sideSpacing))
-                                        Row {
-                                                  OutlinedTextField(
-                                                            value = vm.changeDispenserSN,
-                                                            modifier = Modifier.padding(start = sideSpacing),
-                                                            onValueChange = { vm.change_Dispenser_SN(it)},
-                                                  )
-                                                  Spacer(modifier = Modifier.padding(start = 10.dp))
-                                                  IconButton(
-                                                            onClick = {
-                                                                      vm.changeDispenserSN = ""
-                                                            }
-                                                  ) {
-                                                            Icon(painterResource(R.drawable.icons8_clear_symbol_96), "clear")
-                                                  }
-                                        }
-                                        Spacer(modifier = Modifier.padding(bottom = 10.dp))
+                                  Text("Model",  modifier = Modifier.padding(start = sideSpacing))
+                                  Row {
+                                      OutlinedTextField(
+                                          value = vm.changeDispenserModel,
+                                          modifier = Modifier.padding(start = sideSpacing),
+                                          onValueChange = { vm.change_Dispenser_Model(it)}
+                                      )
+                                      Spacer(modifier = Modifier.padding(start = 10.dp))
+                                      IconButton(
+                                          onClick = {
+                                              vm.changeDispenserModel = ""
+                                          }
+                                      ) {
+                                          Icon(painterResource(R.drawable.icons8_clear_symbol_96), "clear")
+                                      }
+                                  }
+                                  Spacer(modifier = Modifier.padding(bottom = 10.dp))
 
-                                        Text("Station",  modifier = Modifier.padding(start = sideSpacing),)
-                                        MyCustomGenericDropdown_1a(vm, stationOptions, "Station").MainMenu()
-                                        Spacer(modifier = Modifier.padding(bottom = 360.dp))
+                                  Text("Disp. SN",  modifier = Modifier.padding(start = sideSpacing))
+                                  Row {
+                                      OutlinedTextField(
+                                          value = vm.changeDispenserSN,
+                                          modifier = Modifier.padding(start = sideSpacing),
+                                          onValueChange = { vm.change_Dispenser_SN(it)},
+                                      )
+                                      Spacer(modifier = Modifier.padding(start = 10.dp))
+                                      IconButton(
+                                          onClick = {
+                                              vm.changeDispenserSN = ""
+                                          }
+                                      ) {
+                                          Icon(painterResource(R.drawable.icons8_clear_symbol_96), "clear")
+                                      }
+                                  }
+                                  Spacer(modifier = Modifier.padding(bottom = 10.dp))
+
+                                  Text("Station",  modifier = Modifier.padding(start = sideSpacing),)
+                                  MyCustomGenericDropdown_1a(vm, stationOptions, "Station").MainMenu()
+                                  Spacer(modifier = Modifier.padding(bottom = 360.dp))
                               }
                     }
           }
@@ -531,8 +542,8 @@ class DependenciesForOverviewScreen(val vm: MyScreensVM){
                               0.0
                               TODO()
                     }else{
-                              val differenceAsDouble:Double =  vm.changeDifference.toDouble()
-                              val expectedLitersAsDouble: Double = vm.changeExpectedLitres.toDouble()
+                              val differenceAsDouble:Double =  vm.changeDifference
+                              val expectedLitersAsDouble: Double = vm.changeExpectedLitres
                               val unroundedResult = expectedLitersAsDouble.minus(differenceAsDouble)
                               val finalResult = unroundedResult.roundToTwoDecimalPlaces().toDouble()
                               finalResult
@@ -544,11 +555,13 @@ class DependenciesForOverviewScreen(val vm: MyScreensVM){
                     vm.changeDM = calculateDM()
           }
 
-          fun setVisualResult() {
-                    if (calculateDM() in 1.2..1.35){
+          fun setVisualResult() {  // This code ensures that, the visual result EMOJIS is only for only 25 litres, for 6.25 and 12.5 litres, it displays N/A
+                    if (vm.changeLitresFilled == "25" && calculateDM() in 1.2..1.35){
                               vm.changeVisualResult = "✔"
+                    }else if(vm.changeLitresFilled == "6.25" || vm.changeLitresFilled == "12.5" ){
+                              vm.changeVisualResult = "N/A"
                     }else{
-                              vm.changeVisualResult = "❌"
+                        vm.changeVisualResult = "❌"
                     }
           }
 }

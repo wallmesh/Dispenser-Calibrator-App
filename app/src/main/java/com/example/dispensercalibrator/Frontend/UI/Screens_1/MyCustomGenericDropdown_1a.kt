@@ -32,6 +32,11 @@ import javax.inject.Inject
 // TTDs
 //1.        The number of DropdownMenuItems() that are created should be dependent on the number menu options there are. It should correspond so it does not show only two options every time even if there are more. -- done
 
+//ReadMe
+// 1.  The "nameOfCalibrationDetail" is like a unique ID string, used to determine which content to display for each instance of this custom dropdown menu.
+//    For eg. if the "nameOfCalibrationDetail" value is set to "Side", then the dropdown menu displays a list of sides as in "side1" and "side2", which are supplied by
+//    another constructor the "suppliedListOfMenuOptions". If the value is say "Temperature" then it displays the options "cool" and "warm" as the dropdown menu options.
+
 class MyCustomGenericDropdown_1a @Inject constructor(val vm: MyScreensVM, val suppliedListOfMenuOptions: List<String>, var nameOfCalibrationDetail:String) {
 
           object HasBeenClickedSingleton{
@@ -53,7 +58,7 @@ class MyCustomGenericDropdown_1a @Inject constructor(val vm: MyScreensVM, val su
                                                             "Difference" -> Text(vm.changeDifference.toString(), modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
                                                             "Tolerance" -> Text(vm.changeTolerance, modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
                                                             "DM" -> Text(vm.changeDM.toString(), modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
-                                                            "LitresFilled" -> Text(vm.changeLitresFilled, modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
+                                                            "LitresFilled" -> Text("${vm.changeLitresFilled} lts", modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
                                                             "ExpectedLiters" -> Text(vm.changeExpectedLitres.toString(), modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
                                                             "Side" -> Text(vm.changeSide, modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
                                                             "DispenserModel" -> Text(vm.changeDispenserModel, modifier = Modifier.Companion.width(120.dp), color = Color.Companion.Red)
